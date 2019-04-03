@@ -1,2 +1,11 @@
-# ribbit-game
-Rudimentary Clone of the Frogger Arcade Game
+# Ribbit Game
+Rudimentary Clone of Classic Frogger Arcade Game
+
+## Table of Contents
+
+- [Instructions](#instructions)
+
+## Instructions
+
+
+
