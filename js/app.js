@@ -1,15 +1,19 @@
 // Constants
 const PLAYER_START_X = 200; 
 const PLAYER_START_Y = 400;
+const PLAYER_MOVE_INCREMENTS = 10;
+const NUM_ENEMIES = 4;
+const ENEMY_TOP_BOUNDARY = 0;
+const ENEMY_BOTTOM_BOUNDARY = 150;
 
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(initialX, initialY) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // Enemy coordinates
-    this.x = 0;
-    this.y = 0;
+    this.x = initialX;
+    this.y = initialY;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -41,12 +45,53 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
 }
 
-Player.prototype.update = function() {
+Player.prototype.update = function(action) {
+    switch(action) {
+        case 'moveUp' :  
+            this.y -= PLAYER_MOVE_INCREMENTS;
+            break;
+        case 'moveDown' :  
+            this.y += PLAYER_MOVE_INCREMENTS;
+            break;
+        case 'moveLeft' :  
+            this.x -= PLAYER_MOVE_INCREMENTS;
+            break;
+        case 'moveRight' :  
+            this.x += PLAYER_MOVE_INCREMENTS;
+            break;
 
+        case 'reset' :
+            this.x = PLAYER_START_X;
+            this.y = PLAYER_START_Y; 
+            break;
+        default:
+            console.log("Invalid action:", action);
+    }
 }
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Player.prototype.handleInput = function(direction) {
+
+    switch(direction) {
+        case 'up' :
+            player.update('moveUp');
+            break;
+        case 'down' :
+            player.update('moveDown');
+            break;
+        case 'left' :
+            player.update('moveLeft');
+            break;
+        case 'right' :
+            player.update('moveRight');
+            break;
+        default:
+            console.log("Input direction invalid: ", direction);
+    }
+
 }
 
 
@@ -54,7 +99,9 @@ Player.prototype.render = function() {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 let allEnemies = [];
-allEnemies.push(new Enemy);
+for (let i = 0; i < NUM_ENEMIES; i++) {
+    allEnemies.push(new Enemy(0, 100));
+}
 
 let player = new Player();
 
