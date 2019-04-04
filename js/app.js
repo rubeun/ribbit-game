@@ -5,6 +5,8 @@ const PLAYER_MOVE_INCREMENTS = 10;
 const NUM_ENEMIES = 4;
 const ENEMY_TOP_BOUNDARY = 50;
 const ENEMY_BOTTOM_BOUNDARY = 300;
+const ENEMY_MIN_SPEED = 10;
+const ENEMY_MAX_SPEED = 80;
 
 // UTILITIES
 // Create a random number in between 2 numbers
@@ -37,6 +39,15 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    // If enemy moves off the width of the board, move it back to start
+    if (this.x < 500) {
+        this.x += (this.speed * dt);
+    } else {
+        this.x = 0;
+    }
+
+    // Collision handling
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -116,8 +127,8 @@ let allEnemies = [];
 let enemySpacing = Math.floor((ENEMY_BOTTOM_BOUNDARY - ENEMY_TOP_BOUNDARY) / (NUM_ENEMIES - 1));
 let enemyStartY = ENEMY_TOP_BOUNDARY;
 for (let i = 0; i < NUM_ENEMIES; i++) {
-    console.log("Enemy Start Y:", enemyStartY);
-    allEnemies.push(new Enemy(0, enemyStartY, 1));
+    let enemySpeed = randomNum(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
+    allEnemies.push(new Enemy(0, enemyStartY, enemySpeed));
     enemyStartY += enemySpacing;
 }
 
