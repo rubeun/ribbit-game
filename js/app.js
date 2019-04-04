@@ -57,7 +57,7 @@ Enemy.prototype.update = function(dt) {
     let playerY = player.playerYCoord();
     //console.log("Enemy coords: " + this.x + ", " + this.y);
     //console.log("Player coords: " + playerX + ", " + playerY);
-    if ((this.x > (playerX - 20)) && (this.x < (playerX + 20)) && ((this.y > (playerY - 20)) && (this.y < (playerY + 20)))) {
+    if ((this.x > (playerX - 60)) && (this.x < (playerX + 60)) && ((this.y > (playerY - 60)) && (this.y < (playerY + 60)))) {
         console.log("Player Dies - Player coords: " + playerX + "," + playerY + " Enemy coords: " + this.x + "," + this.y);
         player.playerDies();
     }
