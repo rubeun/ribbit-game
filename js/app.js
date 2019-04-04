@@ -1,19 +1,30 @@
-// Constants
+// CONSTANTS
 const PLAYER_START_X = 200; 
-const PLAYER_START_Y = 400;
+const PLAYER_START_Y = 440;
 const PLAYER_MOVE_INCREMENTS = 10;
 const NUM_ENEMIES = 4;
-const ENEMY_TOP_BOUNDARY = 0;
-const ENEMY_BOTTOM_BOUNDARY = 150;
+const ENEMY_TOP_BOUNDARY = 50;
+const ENEMY_BOTTOM_BOUNDARY = 300;
 
+// UTILITIES
+// Create a random number in between 2 numbers
+function randomNum(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+// ENEMY 
 // Enemies our player must avoid
-var Enemy = function(initialX, initialY) {
+var Enemy = function(initialX, initialY, enemySpeed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // Enemy coordinates
     this.x = initialX;
     this.y = initialY;
+
+    // Enemy speed
+    this.speed = enemySpeed;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -45,6 +56,7 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
 }
 
+// Update player's location
 Player.prototype.update = function(action) {
     switch(action) {
         case 'moveUp' :  
@@ -65,14 +77,16 @@ Player.prototype.update = function(action) {
             this.y = PLAYER_START_Y; 
             break;
         default:
-            console.log("Invalid action:", action);
+            //console.log("Invalid action:", action);
     }
 }
 
+// Render player on screen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+// Handle keyboard directional input for player
 Player.prototype.handleInput = function(direction) {
 
     switch(direction) {
@@ -99,8 +113,12 @@ Player.prototype.handleInput = function(direction) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 let allEnemies = [];
+let enemySpacing = Math.floor((ENEMY_BOTTOM_BOUNDARY - ENEMY_TOP_BOUNDARY) / (NUM_ENEMIES - 1));
+let enemyStartY = ENEMY_TOP_BOUNDARY;
 for (let i = 0; i < NUM_ENEMIES; i++) {
-    allEnemies.push(new Enemy(0, 100));
+    console.log("Enemy Start Y:", enemyStartY);
+    allEnemies.push(new Enemy(0, enemyStartY, 1));
+    enemyStartY += enemySpacing;
 }
 
 let player = new Player();
