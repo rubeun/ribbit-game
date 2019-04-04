@@ -105,6 +105,12 @@ Player.prototype.update = function(action) {
         // Reset to start
         this.x = PLAYER_START_X;
         this.y = PLAYER_START_Y; 
+    } else if (this.y > PLAYER_START_Y) {
+        this.y = PLAYER_START_Y;
+    } else if (this.x < 0) {
+        this.x = -10;
+    } else if (this.x > 400) {
+        this.x = 410;
     }
 }
 
