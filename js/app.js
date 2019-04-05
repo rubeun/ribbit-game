@@ -1,21 +1,27 @@
-// CONSTANTS
+// ### CONSTANTS ###
 const PLAYER_START_X = 200; 
 const PLAYER_START_Y = 440;
 const PLAYER_MOVE_INCREMENTS = 20;
+const PLAYER_SPRITE_SIZE = 60;
 const NUM_ENEMIES = 4;
 const ENEMY_TOP_BOUNDARY = 50;
 const ENEMY_BOTTOM_BOUNDARY = 300;
 const ENEMY_MIN_SPEED = 50;
 const ENEMY_MAX_SPEED = 150;
 
-// UTILITIES
+const playerScoreWins = document.querySelector('#player-wins');
+const playerScoreDeaths = document.querySelector('#player-deaths');
+const gameMessage = document.querySelector('#game-message');
+
+// ### UTILITIES ###
 // Create a random number in between 2 numbers
 function randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 
-// ENEMY 
+
+// ### ENEMY ### 
 // Enemies our player must avoid
 var Enemy = function(initialX, initialY, enemySpeed) {
     // Variables applied to each of our instances go here,
@@ -32,19 +38,14 @@ var Enemy = function(initialX, initialY, enemySpeed) {
     // Enemy speed
     this.speed = enemySpeed;
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // Enemy sprite
     this.sprite = 'images/enemy-bug.png';
-
 
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
     // If enemy moves off the width of the board, move it back to start
     if (this.x < 500) {
         this.x += (this.speed * dt);
@@ -52,13 +53,13 @@ Enemy.prototype.update = function(dt) {
         this.x = -100;
     }
 
-    // Collision handling
-    let playerX = player.playerXCoord();
-    let playerY = player.playerYCoord();
-    //console.log("Enemy coords: " + this.x + ", " + this.y);
-    //console.log("Player coords: " + playerX + ", " + playerY);
-    if ((this.x > (playerX - 60)) && (this.x < (playerX + 60)) && ((this.y > (playerY - 60)) && (this.y < (playerY + 60)))) {
-        console.log("Player Dies - Player coords: " + playerX + "," + playerY + " Enemy coords: " + this.x + "," + this.y);
+    // Collision handling.  
+    let playerLeftEdge = player.playerXCoord() - PLAYER_SPRITE_SIZE;
+    let playerRightEdge = player.playerXCoord() + PLAYER_SPRITE_SIZE;
+    let playerTopEdge = player.playerYCoord() - PLAYER_SPRITE_SIZE;
+    let playerBottomEdge = player.playerYCoord() + PLAYER_SPRITE_SIZE;
+    if ((this.x > playerLeftEdge) && (this.x < playerRightEdge) && ((this.y > playerTopEdge) && (this.y < playerBottomEdge))) {
+        //console.log("Player Dies - Player coords: " + playerX + "," + playerY + " Enemy coords: " + this.x + "," + this.y);
         player.playerDies();
     }
 };
@@ -68,11 +69,11 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// PLAYER
-// This class requires an update(), render() and
-// a handleInput() method.
+// ### PLAYER ###
+// Player controlled avatar. 
 var Player = function() {
     // Score
+    this.hasWon = false;
     this.wins = 0;
     this.deaths = 0;
 
@@ -80,6 +81,7 @@ var Player = function() {
     this.x = PLAYER_START_X;
     this.y = PLAYER_START_Y;
 
+    // Player sprite
     this.sprite = 'images/char-boy.png';
 
     this.playerXCoord = function() {
@@ -89,22 +91,41 @@ var Player = function() {
         return this.y;
     }
 
-    this.playerDies = function() {
+    this.playerWins = function() {
+        this.hasWon = true;
+        this.wins += 1;
         this.x = PLAYER_START_X;
         this.y = PLAYER_START_Y;
+        gameMessage.textContent = "#### YOU WON! ####";
+        playerScoreWins.classList.add('score-update');
+        setTimeout(function(){
+            gameMessage.textContent = "Get to the Water!"
+            playerScoreWins.classList.remove('score-update');
+        }, 2000);
+        playerScoreWins.textContent = this.wins;
+    }
+
+    this.playerDies = function() {
+        this.deaths += 1;
+        this.x = PLAYER_START_X;
+        this.y = PLAYER_START_Y;
+        gameMessage.textContent = "#### YOU DIED! ####";
+        playerScoreDeaths.classList.add('score-update');
+        setTimeout(function(){
+            gameMessage.textContent = "Get to the Water!"
+            playerScoreDeaths.classList.remove('score-update');
+        }, 2000);
+        playerScoreDeaths.textContent = this.deaths;
     }
 }
 
 // Update player's location
 Player.prototype.update = function(action) {
 
-    // Player reaches water. Toggle win.
+    // If player reaches water, player wins. Also keeps player within game board.
     if (this.y < 0) {
         // Player Wins!
-        console.log("Player Wins!");
-        // Reset to start
-        this.x = PLAYER_START_X;
-        this.y = PLAYER_START_Y; 
+        this.playerWins();
     } else if (this.y > PLAYER_START_Y) {
         this.y = PLAYER_START_Y;
     } else if (this.x < 0) {
@@ -141,8 +162,7 @@ Player.prototype.handleInput = function(direction) {
 
 }
 
-
-// INIT
+// ### INIT ###
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
@@ -158,13 +178,13 @@ if (NUM_ENEMIES > 1) {
 
 for (let i = 0; i < NUM_ENEMIES; i++) {
     let enemySpeed = randomNum(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
-    let newEnemy = new Enemy(-100, enemyStartY, enemySpeed);
+    let newEnemy = new Enemy(-100, enemyStartY, enemySpeed); // start enemies off screen by setting x to -100
     allEnemies.push(newEnemy);
-    enemyStartY += enemySpacing;
+    enemyStartY += enemySpacing; 
 }
 
 
-// EVENT LISTENERS
+// ### EVENT LISTENERS ###
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {

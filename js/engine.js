@@ -28,6 +28,8 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+    //const popup = document.querySelector('.popup');
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -54,8 +56,15 @@ var Engine = (function(global) {
 
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
+         * If player has won, call cancelAnimationFrame function to stop animations.
          */
+        // if (player.hasWon === true) {
+        //     win.cancelAnimationFrame(animID);
+        // } else {
+        //     animID = win.requestAnimationFrame(main);
+        // }
         win.requestAnimationFrame(main);
+    
     }
 
     /* This function does some initial setup that should only occur once,

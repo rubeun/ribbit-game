@@ -1,3 +1,51 @@
 body {
     text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#player-controls {
+    width: 400px;
+    margin: 0 auto;
+}
+
+#player-controls li {
+    list-style: none;
+    width: 100px;
+    float: left;
+}
+
+#game-message {
+    animation-duration: 0.5s;
+    animation-name: pulse;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+
+.score-update {
+    animation-duration: 0.5s;
+    animation-name: flicker;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes pulse {
+    from {
+        color: rgb(0, 0, 0);
+    }
+    to {
+        color: rgb(72, 253, 244);
+    }
+}
+
+@keyframes flicker {
+    from {
+        color: rgb(0, 0, 0);
+        font-size: 1em
+    }
+    to {
+        color: rgb(253, 129, 72);
+        font-size: 1.5em;
+    }
 }
