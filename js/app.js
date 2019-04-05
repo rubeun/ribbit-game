@@ -13,7 +13,7 @@ const ENEMY_MAX_SPEED = 150;
 
 const DOM_PLAYER_SCORE_WINS = document.querySelector('#player-wins');
 const DOM_PLAYER_SCORE_DEATHS = document.querySelector('#player-deaths');
-const DOM_GAME_MESSAGE = document.querySelector('#game-message');
+const DOM_GAME_MESSAGE = document.querySelector('.game-message');
 
 // ### UTILITIES ###
 // Create a random number in between 2 numbers
