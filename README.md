@@ -1,9 +1,15 @@
 # Ribbit Game
-Rudimentary Clone of Classic Frogger Arcade Game
+Rudimentary Clone of Classic Frogger Arcade Game.
+
+Player can use keyboard directional keys to move the player across the road to the water while avoiding enemy bugs. Score is kept over how many times the player Wins and how many times the player is hit by an enemy and dies.
 
 ## Table of Contents
-
+- [Setup](#setup)
 - [Instructions](#instructions)
+
+## Setup
+- Download & Unzip Files
+- Launch game by using your favourite Web Browser to open a file. Search for the newly created directory `ribbit-game` and load `index.html`
 
 ## Instructions
 - Use Arrow Keys Up, Down, Left & Right to move the Player
