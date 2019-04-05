@@ -20,6 +20,7 @@ function randomNum(min, max) {
 }
 
 // Sound FX Utility. Plays various game sounds.
+// Sound FX downloaded from http://www.classicgaming.cc/classics/frogger/sounds
 function playSound(sound) {
     const soundURLs = {
       "jump": "./sounds/sound-frogger-hop.wav",
