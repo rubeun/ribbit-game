@@ -1,6 +1,8 @@
 # Ribbit Game
 Rudimentary Clone of Classic Frogger Arcade Game.
 
+![alt-text][game-image]
+
 Player can use keyboard directional keys to move the player across the road to the water while avoiding enemy bugs. Score is kept over how many times the player Wins and how many times the player is hit by an enemy and dies.
 
 ## Table of Contents
@@ -16,4 +18,4 @@ Player can use keyboard directional keys to move the player across the road to t
 - If the player is hit by an enemy bug, the players score is updated with one death and the player restarts back at the bottom of the screen
 - If the player succeeds in avoding the bugs and makes it to the water, the players score is updated with one win and the player restarts back at the bottom of the screen
 
-
+[game-image]: https://github.com/rubeun/ribbit-game/blob/master/images/Ribbit-Game.png "Ribbit Game Screen"
