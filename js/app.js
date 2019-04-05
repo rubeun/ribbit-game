@@ -62,12 +62,9 @@ Enemy.prototype.update = function(dt) {
         this.x = -100;
     }
 
-    // Collision handling taking into account player sprite size  
-    let playerLeftEdge = player.playerXCoord() - PLAYER_SPRITE_SIZE;
-    let playerRightEdge = player.playerXCoord() + PLAYER_SPRITE_SIZE;
-    let playerTopEdge = player.playerYCoord() - PLAYER_SPRITE_SIZE;
-    let playerBottomEdge = player.playerYCoord() + PLAYER_SPRITE_SIZE;
-    if ((this.x > playerLeftEdge) && (this.x < playerRightEdge) && ((this.y > playerTopEdge) && (this.y < playerBottomEdge))) {
+    // Collision handling taking into account player edges  
+    if ((this.x > player.playerLeftEdge()) && (this.x < player.playerRightEdge()) 
+        && ((this.y > player.playerTopEdge()) && (this.y < player.playerBottomEdge()))) {
         //console.log("Player Dies - Player coords: " + playerX + "," + playerY + " Enemy coords: " + this.x + "," + this.y);
         player.playerDies();
     }
@@ -92,18 +89,27 @@ var Player = function() {
     // Player sprite
     this.sprite = 'images/char-boy.png';
 
-    this.playerXCoord = function() {
-        return this.x;
+    // Player sprite edge coordinates for collision detection
+    this.playerLeftEdge = function() {
+        return this.x - PLAYER_SPRITE_SIZE;
     }
-    this.playerYCoord = function() {
-        return this.y;
+    this.playerRightEdge = function() {
+        return this.x + PLAYER_SPRITE_SIZE;
+    }
+    this.playerTopEdge = function() {
+        return this.y - PLAYER_SPRITE_SIZE;
+    }
+    this.playerBottomEdge = function() {
+        return this.y + PLAYER_SPRITE_SIZE;
     }
 
+    // Resets the player to starting position
     this.playerResetPosition = function() {
         this.x = PLAYER_START_X;  
         this.y = PLAYER_START_Y;
     }
 
+    // Player Wins
     this.playerWins = function() {
         this.wins += 1;
         playSound("win");
@@ -117,6 +123,7 @@ var Player = function() {
         DOM_PLAYER_SCORE_WINS.textContent = this.wins;
     }
 
+    // Player Dies
     this.playerDies = function() {
         this.deaths += 1;
         playSound("die");
