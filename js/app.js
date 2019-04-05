@@ -1,3 +1,5 @@
+'use strict';
+
 // ### CONSTANTS ###
 const PLAYER_START_X = 200; 
 const PLAYER_START_Y = 440;
@@ -9,9 +11,9 @@ const ENEMY_BOTTOM_BOUNDARY = 300;
 const ENEMY_MIN_SPEED = 50;
 const ENEMY_MAX_SPEED = 150;
 
-const playerScoreWins = document.querySelector('#player-wins');
-const playerScoreDeaths = document.querySelector('#player-deaths');
-const gameMessage = document.querySelector('#game-message');
+const DOM_PLAYER_SCORE_WINS = document.querySelector('#player-wins');
+const DOM_PLAYER_SCORE_DEATHS = document.querySelector('#player-deaths');
+const DOM_GAME_MESSAGE = document.querySelector('#game-message');
 
 // ### UTILITIES ###
 // Create a random number in between 2 numbers
@@ -41,10 +43,6 @@ var Enemy = function(initialX, initialY, enemySpeed) {
     // Enemy coordinates
     this.x = initialX;
     this.y = initialY;
-
-    // Keeps track of players coords for collision detection
-    this.playerX = 0;
-    this.playerY = 0;
 
     // Enemy speed
     this.speed = enemySpeed;
@@ -110,26 +108,26 @@ var Player = function() {
         this.wins += 1;
         playSound("win");
         this.playerResetPosition();
-        gameMessage.textContent = "#### YOU WON! ####";
-        playerScoreWins.classList.add('score-update');
+        DOM_GAME_MESSAGE.textContent = "#### YOU WON! ####";
+        DOM_PLAYER_SCORE_WINS.classList.add('score-update');
         setTimeout(function(){
-            gameMessage.textContent = "Get to the Water!"
-            playerScoreWins.classList.remove('score-update');
+            DOM_GAME_MESSAGE.textContent = "Get to the Water!"
+            DOM_PLAYER_SCORE_WINS.classList.remove('score-update');
         }, 2000);
-        playerScoreWins.textContent = this.wins;
+        DOM_PLAYER_SCORE_WINS.textContent = this.wins;
     }
 
     this.playerDies = function() {
         this.deaths += 1;
         playSound("die");
         this.playerResetPosition();
-        gameMessage.textContent = "#### YOU DIED! ####";
-        playerScoreDeaths.classList.add('score-update');
+        DOM_GAME_MESSAGE.textContent = "#### YOU DIED! ####";
+        DOM_PLAYER_SCORE_DEATHS.classList.add('score-update');
         setTimeout(function(){
-            gameMessage.textContent = "Get to the Water!"
-            playerScoreDeaths.classList.remove('score-update');
+            DOM_GAME_MESSAGE.textContent = "Get to the Water!"
+            DOM_PLAYER_SCORE_DEATHS.classList.remove('score-update');
         }, 2000);
-        playerScoreDeaths.textContent = this.deaths;
+        DOM_PLAYER_SCORE_DEATHS.textContent = this.deaths;
     }
 }
 
