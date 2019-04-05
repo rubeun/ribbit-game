@@ -141,16 +141,21 @@ var Player = function() {
 // Update player's location
 Player.prototype.update = function(action) {
 
-    // If player reaches water, player wins. Also keeps player within game board.
-    if (this.y < 0) {
-        // Player Wins!
-        this.playerWins();
-    } else if (this.y > PLAYER_START_Y) {
-        this.y = PLAYER_START_Y;
-    } else if (this.x < 0) {
-        this.x = -10;
-    } else if (this.x > 400) {
-        this.x = 410;
+    this.playerMovesUp = function() {
+        playSound("jump");
+        this.y -= PLAYER_MOVE_INCREMENTS;
+    }
+    this.playerMovesDown = function() {
+        playSound("jump");
+        this.y += PLAYER_MOVE_INCREMENTS;
+    }
+    this.playerMovesLeft = function() {
+        playSound("jump");
+        this.x -= PLAYER_MOVE_INCREMENTS;
+    }
+    this.playerMovesRight = function() {
+        playSound("jump");
+        this.x += PLAYER_MOVE_INCREMENTS;
     }
 }
 
@@ -159,21 +164,22 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Handle keyboard directional input for player
+// Handle keyboard directional input for player. 
+// Check that player hasn't reached edge of game space before moving
+// If player reaches top. Player Wins.
 Player.prototype.handleInput = function(direction) {
-    playSound("jump");
     switch(direction) {
         case 'up' :
-            this.y -= PLAYER_MOVE_INCREMENTS;
+            this.y > 0 ? this.playerMovesUp() : this.playerWins();            
             break;
         case 'down' :
-            this.y += PLAYER_MOVE_INCREMENTS;
+            this.y < PLAYER_START_Y ? this.playerMovesDown() : this.y = PLAYER_START_Y;      
             break;
         case 'left' :
-            this.x -= PLAYER_MOVE_INCREMENTS;
+            this.x > 0 ? this.playerMovesLeft() : this.x = -10;
             break;
         case 'right' :
-            this.x += PLAYER_MOVE_INCREMENTS;
+            this.x < 400 ? this.playerMovesRight() : this.x = 410;
             break;
         default:
             console.log("Input direction invalid: ", direction);
